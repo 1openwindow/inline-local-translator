@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inline Local Translator Demo</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.7 Inter, Arial, sans-serif;
+        background: #f3f6fb;
+        color: #182230;
+      }
+
+      main {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 56px 24px 80px;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 14px 36px rgba(16, 24, 40, 0.08);
+        padding: 28px 28px 20px;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 2rem;
+        line-height: 1.2;
+      }
+
+      .eyebrow {
+        color: #4b6a88;
+        font-size: 0.95rem;
+        margin: 0 0 20px;
+      }
+
+      p {
+        margin: 0 0 16px;
+      }
+
+      .tep-translation {
+        margin: 6px 0 18px;
+        padding: 8px 10px;
+        border-left: 3px solid #1a73e8;
+        border-radius: 6px;
+        background: rgba(26, 115, 232, 0.08);
+        color: #17324d;
+        font-size: 0.95em;
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
+
+      .tep-translation strong {
+        margin-right: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="card">
+        <div class="eyebrow">Demo article for README screenshots</div>
+        <h1>Translate long-form English text inline on the page</h1>
+        <p id="source-paragraph">Inline Local Translator scans common text blocks on supported websites and inserts a Chinese translation directly below the original content. This makes it easier to compare the source sentence and the translated result without opening another tab or copying text into a separate tool.</p>
+        <div class="tep-translation"><strong>中文:</strong>Inline Local Translator 会扫描受支持网站上的常见正文块，并直接在原文下方插入中文翻译。这样你无需打开新标签页，也不用把文字复制到其他工具里，就能直接对照原文和译文。</div>
+        <p>It is designed for local workflows powered by Ollama, and it works especially well for pages that load additional content dynamically while you browse.</p>
+      </div>
+    </main>
+  </body>
+</html>

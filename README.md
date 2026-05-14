@@ -4,6 +4,20 @@
 
 仓库地址：`https://github.com/1openwindow/inline-local-translator`
 
+## Screenshots
+
+### Inline translation
+
+![Inline translation demo](assets/screenshots/translation-demo.png)
+
+### Popup
+
+![Popup](assets/screenshots/popup.png)
+
+### Settings
+
+![Settings](assets/screenshots/options.png)
+
 功能：
 
 - 浏览网页时自动扫描常见英文正文块
@@ -50,84 +64,6 @@
    - 手动触发当前页翻译
    - 清除当前页已插入翻译
 5. 在设置页中可以修改启用站点列表、模型、接口地址、提示词和扫描规则
-
-## 发布版本
-
-- GitHub Release：`https://github.com/1openwindow/inline-local-translator/releases`
-- 当 GitHub 上发布一个新的 Release 时，Actions 会自动重新打包扩展 zip 并上传到该 Release。
-
-## 固定扩展 ID
-
-- 本项目的 `manifest.json` 已写入固定 `key`，不同机器加载同一份代码时会保持一致的扩展 ID。
-- 用于生成该固定 ID 的私钥不要提交到仓库。
-- 如果你自己维护一份私有副本，私钥应单独安全保存。
-
-## 排查 403
-
-如果插件里出现 `Ollama request failed with status 403`，通常不是模型问题，而是 `Ollama` 拒绝了浏览器扩展来源。
-
-先确认：
-
-- 终端里直接 `curl http://localhost:11434/api/chat ...` 能成功
-- 但插件请求失败并返回 `403`
-
-这种情况需要在运行 `Ollama` 的环境里允许扩展来源。
-
-### Windows 启动方式
-
-如果你的 `Ollama` 跑在 Windows，而插件也跑在 Windows Edge，那么需要在 Windows 里设置环境变量，然后重启 `Ollama`。
-
-PowerShell 可以这样设置：
-
-```powershell
-setx OLLAMA_ORIGINS "chrome-extension://*,extension://*"
-```
-
-然后：
-
-1. 彻底退出正在运行的 `Ollama`
-2. 重新启动 `Ollama`
-3. 刷新 Edge 里的目标网页后再试
-
-如果你是手动在 PowerShell 里启动 `ollama serve`，也可以只在当前会话临时设置：
-
-```powershell
-$env:OLLAMA_ORIGINS = "chrome-extension://*,extension://*"
-ollama serve
-```
-
-如果想先快速验证问题，也可以临时放开：
-
-```powershell
-setx OLLAMA_ORIGINS "*"
-```
-
-### WSL / Linux 启动方式
-
-先停止旧的 `ollama serve`，然后用下面的方式启动：
-
-```bash
-export OLLAMA_ORIGINS="chrome-extension://*,extension://*"
-ollama serve
-```
-
-如果你想先快速验证，也可以临时放开为：
-
-```bash
-export OLLAMA_ORIGINS="*"
-ollama serve
-```
-
-### systemd 场景
-
-如果你是通过 systemd 跑 `Ollama`，需要把环境变量写进 service override，然后重启服务。
-
-核心就是保证 `OLLAMA_ORIGINS` 至少包含：
-
-- `chrome-extension://*`
-- `extension://*`
-
-设置完成后，重启 `Ollama`，再回到 Edge 重新刷新页面测试。
 
 ## 说明
 
