@@ -2,6 +2,8 @@
 
 一个可直接加载到 Edge 的本地翻译插件。
 
+仓库地址：`https://github.com/1openwindow/inline-local-translator`
+
 功能：
 
 - 浏览网页时自动扫描常见英文正文块
@@ -20,6 +22,18 @@
 
 ## 安装方式
 
+### 方式一：从 Releases 下载 zip
+
+1. 打开仓库 Releases 页面
+2. 下载最新的 `inline-local-translator-<version>.zip`
+3. 解压到本地目录
+4. 打开 Edge，进入 `edge://extensions`
+5. 打开“开发人员模式”
+6. 选择“加载解压缩的扩展”
+7. 选择解压后的目录
+
+### 方式二：直接加载仓库目录
+
 1. 打开 Edge，进入 `edge://extensions`
 2. 打开“开发人员模式”
 3. 选择“加载解压缩的扩展”
@@ -36,6 +50,17 @@
    - 手动触发当前页翻译
    - 清除当前页已插入翻译
 5. 在设置页中可以修改启用站点列表、模型、接口地址、提示词和扫描规则
+
+## 发布版本
+
+- GitHub Release：`https://github.com/1openwindow/inline-local-translator/releases`
+- 当 GitHub 上发布一个新的 Release 时，Actions 会自动重新打包扩展 zip 并上传到该 Release。
+
+## 固定扩展 ID
+
+- 本项目的 `manifest.json` 已写入固定 `key`，不同机器加载同一份代码时会保持一致的扩展 ID。
+- 用于生成该固定 ID 的私钥不要提交到仓库。
+- 如果你自己维护一份私有副本，私钥应单独安全保存。
 
 ## 排查 403
 

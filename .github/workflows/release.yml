@@ -1,0 +1,38 @@
+name: Release Extension
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: write
+
+jobs:
+  build-release-zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Create extension zip
+        run: |
+          mkdir -p release
+          python3 -m zipfile -c "release/inline-local-translator-${{ github.event.release.tag_name }}.zip" \
+            manifest.json \
+            background.js \
+            content.js \
+            content.css \
+            popup.html \
+            popup.js \
+            popup.css \
+            options.html \
+            options.js \
+            options.css \
+            README.md \
+            LICENSE
+
+      - name: Upload zip to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*.zip
