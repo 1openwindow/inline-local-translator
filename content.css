@@ -1,0 +1,85 @@
+.tep-translation {
+  margin: 6px 0 10px;
+  padding: 8px 10px;
+  border-left: 3px solid #1a73e8;
+  border-radius: 6px;
+  background: rgba(26, 115, 232, 0.08);
+  color: #17324d;
+  font-size: 0.95em;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.tep-translation[data-tep-state="loading"] {
+  color: #58738f;
+  font-style: italic;
+}
+
+.tep-translation[data-tep-state="error"] {
+  border-left-color: #cc3d3d;
+  background: rgba(204, 61, 61, 0.08);
+  color: #8f2020;
+}
+
+.tep-translation strong {
+  margin-right: 6px;
+}
+
+.tep-indicator {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 2147483647;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(23, 37, 57, 0.92);
+  color: #f8fbff;
+  font: 13px/1.2 Arial, sans-serif;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.28);
+  backdrop-filter: blur(10px);
+}
+
+.tep-indicator[hidden] {
+  display: none;
+}
+
+.tep-indicator-spinner {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #6fb0ff;
+  box-shadow: 0 0 0 0 rgba(111, 176, 255, 0.5);
+  animation: tep-indicator-pulse 1.2s ease-in-out infinite;
+}
+
+.tep-indicator[data-tep-state="done"] .tep-indicator-spinner {
+  animation: none;
+  background: #45c27c;
+  box-shadow: none;
+}
+
+.tep-indicator[data-tep-state="warning"] .tep-indicator-spinner {
+  animation: none;
+  background: #ffb14a;
+  box-shadow: none;
+}
+
+@keyframes tep-indicator-pulse {
+  0% {
+    transform: scale(0.85);
+    box-shadow: 0 0 0 0 rgba(111, 176, 255, 0.5);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(111, 176, 255, 0);
+  }
+
+  100% {
+    transform: scale(0.85);
+    box-shadow: 0 0 0 0 rgba(111, 176, 255, 0);
+  }
+}

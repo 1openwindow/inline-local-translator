@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inline Local Translator</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="popup">
+      <h1>Inline Local Translator</h1>
+      <label class="row toggle">
+        <span>全局启用</span>
+        <input id="enabled" type="checkbox">
+      </label>
+      <label class="row toggle">
+        <span>当前网站启用</span>
+        <input id="site-enabled" type="checkbox">
+      </label>
+      <div class="meta" id="hostname"></div>
+      <button id="translate-page" type="button">翻译当前页面</button>
+      <button id="clear-page" type="button" class="secondary">清除当前页面翻译</button>
+      <button id="open-options" type="button" class="secondary">打开设置</button>
+      <div class="status" id="status"></div>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+  </html>

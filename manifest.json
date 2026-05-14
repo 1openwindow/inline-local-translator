@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Inline Local Translator",
+  "version": "1.0.0",
+  "description": "Translate English webpage text into Chinese below the original text using a local Ollama model.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn0Dx+pefQ+iLPeO/J7tBQZLgf0f8n+Kz/zyqCNot+qdKg7BrmIVdqPPNPDy82nv7Ml2TE15up2/f9xu4NogwTsgtUhCUEc7K3pgwz+y8vWjErodE11cVkRgC/7DPvJUiRyJ23iXbf78FGrsiMkvDyMZ2NrmVPissKQ8Jql9RAOTf3wwvLm1qC7N0KkmUikrWYTFuy/3OIb2qFO9byEIHLExdJnBDA/HZf9tv40TpQscbFsRlRhY6HLCw7/l6D2ZwHpM/30SNbt7G4nb9Sl3eHqcYWAlc5CL09xtiVY/+VNcxvzL9USwaOgenSiwsafhS45kiADUcbJ7x3LrRaVhhnQIDAQAB",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "http://localhost:11434/*",
+    "http://127.0.0.1:11434/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Inline Local Translator",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

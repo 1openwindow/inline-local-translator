@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inline Local Translator Settings</title>
+    <link rel="stylesheet" href="options.css">
+  </head>
+  <body>
+    <main class="page">
+      <h1>Inline Local Translator 设置</h1>
+      <form id="settings-form">
+        <label>
+          <span>启用自动翻译</span>
+          <input id="autoTranslate" type="checkbox">
+        </label>
+        <label>
+          <span>启用站点列表</span>
+          <textarea id="enabledSites" rows="6" placeholder="x.com&#10;twitter.com"></textarea>
+          <small class="hint">一行一个 hostname。只有这里列出的站点会默认启用翻译。</small>
+        </label>
+        <label>
+          <span>Ollama 接口地址</span>
+          <input id="endpoint" type="url" required>
+        </label>
+        <label>
+          <span>模型名称</span>
+          <input id="model" type="text" required>
+        </label>
+        <label>
+          <span>请求超时（毫秒）</span>
+          <input id="requestTimeoutMs" type="number" min="1000" step="1000" required>
+        </label>
+        <label>
+          <span>单次请求最大字符数</span>
+          <input id="maxCharsPerElement" type="number" min="80" step="10" required>
+        </label>
+        <label>
+          <span>最少英文单词数</span>
+          <input id="minWords" type="number" min="1" step="1" required>
+        </label>
+        <label>
+          <span>扫描选择器</span>
+          <input id="scanSelectors" type="text" required>
+        </label>
+        <label>
+          <span>系统提示词</span>
+          <textarea id="systemPrompt" rows="6" required></textarea>
+        </label>
+        <div class="actions">
+          <button type="submit">保存设置</button>
+        </div>
+        <p class="status" id="status"></p>
+      </form>
+    </main>
+    <script src="options.js"></script>
+  </body>
+  </html>
