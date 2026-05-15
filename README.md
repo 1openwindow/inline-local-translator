@@ -35,6 +35,14 @@
 - Ollama 地址：`http://localhost:11434/api/chat`
 - Ollama 模型：`gemma4:e4b`
 
+macOS 使用本地 Ollama 时，需要允许扩展页面访问 Ollama API。执行：
+
+```bash
+launchctl setenv OLLAMA_ORIGINS "http://localhost:3000,http://127.0.0.1:3000,chrome-extension://*,extension://*"
+```
+
+如果 Ollama 已经在运行，执行后重启 Ollama 让配置生效。
+
 ## 安装方式
 
 ### 方式一：从 Releases 下载 zip
@@ -85,6 +93,7 @@
 
 - 当前版本主要翻译段落级内容，不强行处理每一个行内短语，这样能明显降低误翻和页面布局破坏。
 - `单次请求最大字符数` 控制每次发给模型接口的文本块大小。长段落会自动拆分后分别翻译，再拼接显示。
+- 翻译结果会缓存在浏览器本地。同一模型、接口和提示词下，相同英文文本在页面刷新或跳转后会复用缓存，减少重复请求。
 - X/Twitter 会额外扫描 `div[data-testid="tweetText"]` 和 `article div[lang][dir="auto"]`，以兼容运行时 React DOM。
 - 只有在 `启用站点列表` 中列出的 hostname 会自动启用翻译。
 - 如果某些网站正文结构特殊，可以在设置页调整 `扫描选择器`。

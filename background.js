@@ -18,6 +18,8 @@ const SETTINGS_SYNC_KEYS = [
   "enabledSites"
 ];
 const SETTINGS_LOCAL_KEYS = ["azureApiKey"];
+const TRANSLATION_CACHE_STORAGE_KEY = "translationCache";
+const TRANSLATION_CACHE_MAX_ENTRIES = 500;
 
 const DEFAULT_SETTINGS = {
   enabled: true,
@@ -38,6 +40,7 @@ const DEFAULT_SETTINGS = {
 };
 
 const translationCache = new Map();
+let persistentTranslationCache = null;
 
 function pickSettings(source, keys) {
   return keys.reduce((result, key) => {
@@ -111,7 +114,72 @@ function getCacheKey(settings, text) {
   const providerModel = settings.provider === "microsoft-foundry"
     ? settings.azureModelName
     : settings.ollamaModel;
-  return `${settings.provider}::${providerModel}::${text}`;
+  const providerEndpoint = settings.provider === "microsoft-foundry"
+    ? settings.azureApiBase
+    : settings.ollamaEndpoint;
+  return `${settings.provider}::${providerEndpoint}::${providerModel}::${settings.systemPrompt}::${text}`;
+}
+
+async function getPersistentTranslationCache() {
+  if (persistentTranslationCache) {
+    return persistentTranslationCache;
+  }
+
+  try {
+    const stored = await chrome.storage.local.get({ [TRANSLATION_CACHE_STORAGE_KEY]: {} });
+    const cache = stored[TRANSLATION_CACHE_STORAGE_KEY];
+    persistentTranslationCache = cache && typeof cache === "object" && !Array.isArray(cache) ? cache : {};
+  } catch (error) {
+    console.warn("[TEP] failed to load persistent translation cache", error);
+    persistentTranslationCache = {};
+  }
+
+  return persistentTranslationCache;
+}
+
+async function getCachedTranslation(cacheKey) {
+  if (translationCache.has(cacheKey)) {
+    return translationCache.get(cacheKey);
+  }
+
+  const cache = await getPersistentTranslationCache();
+  const entry = cache[cacheKey];
+  if (!entry || typeof entry.translation !== "string") {
+    return null;
+  }
+
+  translationCache.set(cacheKey, entry.translation);
+  return entry.translation;
+}
+
+function prunePersistentTranslationCache(cache) {
+  const entries = Object.entries(cache);
+  if (entries.length <= TRANSLATION_CACHE_MAX_ENTRIES) {
+    return;
+  }
+
+  entries
+    .sort(([, left], [, right]) => (Number(left?.updatedAt) || 0) - (Number(right?.updatedAt) || 0))
+    .slice(0, entries.length - TRANSLATION_CACHE_MAX_ENTRIES)
+    .forEach(([cacheKey]) => {
+      delete cache[cacheKey];
+    });
+}
+
+async function setCachedTranslation(cacheKey, translation) {
+  translationCache.set(cacheKey, translation);
+
+  try {
+    const cache = await getPersistentTranslationCache();
+    cache[cacheKey] = {
+      translation,
+      updatedAt: Date.now()
+    };
+    prunePersistentTranslationCache(cache);
+    await chrome.storage.local.set({ [TRANSLATION_CACHE_STORAGE_KEY]: cache });
+  } catch (error) {
+    console.warn("[TEP] failed to save persistent translation cache", error);
+  }
 }
 
 function splitOversizeSegment(segment, maxChars) {
@@ -344,8 +412,9 @@ async function translateText(text, settings) {
   }
 
   const cacheKey = getCacheKey(settings, cleanedText);
-  if (translationCache.has(cacheKey)) {
-    return translationCache.get(cacheKey);
+  const cachedTranslation = await getCachedTranslation(cacheKey);
+  if (cachedTranslation) {
+    return cachedTranslation;
   }
 
   const controller = new AbortController();
@@ -357,19 +426,20 @@ async function translateText(text, settings) {
 
     for (const chunk of chunks) {
       const chunkCacheKey = getCacheKey(settings, chunk);
-      if (translationCache.has(chunkCacheKey)) {
-        translatedChunks.push(translationCache.get(chunkCacheKey));
+      const cachedChunkTranslation = await getCachedTranslation(chunkCacheKey);
+      if (cachedChunkTranslation) {
+        translatedChunks.push(cachedChunkTranslation);
         continue;
       }
 
       const translatedChunk = await requestTranslation(chunk, settings, controller.signal);
-      translationCache.set(chunkCacheKey, translatedChunk);
+      await setCachedTranslation(chunkCacheKey, translatedChunk);
       translatedChunks.push(translatedChunk);
     }
 
     const translated = translatedChunks.join("");
 
-    translationCache.set(cacheKey, translated);
+    await setCachedTranslation(cacheKey, translated);
     return translated;
   } finally {
     clearTimeout(timeoutId);
