@@ -298,7 +298,9 @@ async function translateElement(element, runId) {
 }
 
 async function drainQueue() {
-  while (activeJobs < 2 && jobQueue.length > 0) {
+  const maxConcurrentRequests = Math.max(1, Number(settings?.maxConcurrentRequests) || 1);
+
+  while (activeJobs < maxConcurrentRequests && jobQueue.length > 0) {
     const job = jobQueue.shift();
     const element = job?.element;
     const runId = job?.runId;

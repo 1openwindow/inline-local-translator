@@ -20,12 +20,42 @@
           <small class="hint">一行一个 hostname。只有这里列出的站点会默认启用翻译。</small>
         </label>
         <label>
+          <span>模型提供方</span>
+          <select id="provider">
+            <option value="ollama">Ollama</option>
+            <option value="microsoft-foundry">Microsoft Foundry</option>
+          </select>
+        </label>
+        <section class="provider-section" data-provider="ollama">
+        <label>
           <span>Ollama 接口地址</span>
-          <input id="endpoint" type="url" required>
+          <input id="ollamaEndpoint" type="url">
         </label>
         <label>
-          <span>模型名称</span>
-          <input id="model" type="text" required>
+          <span>Ollama 模型名称</span>
+          <input id="ollamaModel" type="text">
+        </label>
+        </section>
+        <section class="provider-section" data-provider="microsoft-foundry">
+          <label>
+            <span>AZURE_API_BASE</span>
+            <input id="azureApiBase" type="url">
+            <small class="hint">例如：`https://your-resource.services.ai.azure.com/openai/v1`</small>
+          </label>
+          <label>
+            <span>AZURE_API_KEY</span>
+            <input id="azureApiKey" type="password" autocomplete="off" spellcheck="false">
+            <small class="hint">仅保存在当前浏览器本机，不会写入同步存储。</small>
+          </label>
+          <label>
+            <span>MODEL_NAME</span>
+            <input id="azureModelName" type="text">
+          </label>
+        </section>
+        <label>
+          <span>最大并发请求数</span>
+          <input id="maxConcurrentRequests" type="number" min="1" step="1" required>
+          <small class="hint">同一页面同时发起的翻译请求上限，默认 `2`。</small>
         </label>
         <label>
           <span>请求超时（毫秒）</span>
@@ -48,6 +78,7 @@
           <textarea id="systemPrompt" rows="6" required></textarea>
         </label>
         <div class="actions">
+          <button id="testConnection" type="button" class="secondary">测试连接</button>
           <button type="submit">保存设置</button>
         </div>
         <p class="status" id="status"></p>

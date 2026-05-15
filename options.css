@@ -26,12 +26,14 @@ label {
 }
 
 input,
+select,
 textarea,
 button {
   font: inherit;
 }
 
 input,
+select,
 textarea {
   padding: 10px 12px;
   border: 1px solid #c9d4e0;
@@ -54,7 +56,27 @@ button {
   color: #4d647a;
 }
 
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+button.secondary {
+  background: #dde7f5;
+  color: #1c2630;
+}
+
 .hint {
   color: #5f7388;
   font-size: 0.92rem;
+}
+
+.provider-section {
+  display: grid;
+  gap: 14px;
+}
+
+.provider-section[hidden] {
+  display: none;
 }
