@@ -70,7 +70,7 @@
 
 在设置页把 `模型提供方` 切换为 `Microsoft Foundry` 后，填写：
 
-- `AZURE_API_BASE`：例如 `https://zihch-test-eus2.services.ai.azure.com/openai/v1`
+- `AZURE_API_BASE`：例如 `https://<your-resource>.services.ai.azure.com/openai/v1`
 - `AZURE_API_KEY`：你的 Foundry API key
 - `MODEL_NAME`：例如 `gpt-5-mini`
 
