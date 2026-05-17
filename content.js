@@ -336,8 +336,8 @@ async function drainQueue() {
   }
 }
 
-function collectCandidates(root = document) {
-  if (!isCurrentSiteEnabled()) {
+function collectCandidates(root = document, force = false) {
+  if (!force && !isCurrentSiteEnabled()) {
     return [];
   }
 
@@ -390,7 +390,7 @@ function scheduleScan(root = document, force = false) {
     pendingScanRoots.clear();
 
     for (const pendingRoot of roots) {
-      collectCandidates(pendingRoot).forEach(enqueue);
+      collectCandidates(pendingRoot, force).forEach(enqueue);
     }
   }, 300);
 }
@@ -461,7 +461,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   (async () => {
     if (message?.type === "TRANSLATE_PAGE") {
       await refreshSettings();
-      scheduleScan(document, true);
+      collectCandidates(document, true).forEach(enqueue);
       sendResponse({ ok: true });
       return;
     }
