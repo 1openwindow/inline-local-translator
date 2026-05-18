@@ -31,6 +31,14 @@
     },
     "default_popup": "popup.html"
   },
+  "commands": {
+    "translate-current-page": {
+      "suggested_key": {
+        "default": "Alt+Shift+F"
+      },
+      "description": "翻译当前页面"
+    }
+  },
   "options_page": "options.html",
   "content_scripts": [
     {

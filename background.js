@@ -460,6 +460,21 @@ async function setSiteEnabled(hostname, enabled) {
   return saveSettings({ enabledSites: Array.from(nextEnabledSites).sort() });
 }
 
+async function translateActiveTab() {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const url = tab?.url ? new URL(tab.url) : null;
+
+  if (!tab?.id || !url || !/^https?:$/.test(url.protocol)) {
+    return;
+  }
+
+  try {
+    await chrome.tabs.sendMessage(tab.id, { type: "TRANSLATE_PAGE" });
+  } catch {
+    // Ignore pages where the content script is unavailable.
+  }
+}
+
 chrome.runtime.onInstalled.addListener(async () => {
   const current = await chrome.storage.sync.get(null);
   const local = await chrome.storage.local.get(null);
@@ -468,6 +483,12 @@ chrome.runtime.onInstalled.addListener(async () => {
     chrome.storage.sync.set(pickSettings(next, SETTINGS_SYNC_KEYS)),
     chrome.storage.local.set(pickSettings(next, SETTINGS_LOCAL_KEYS))
   ]);
+});
+
+chrome.commands.onCommand.addListener((command) => {
+  if (command === "translate-current-page") {
+    void translateActiveTab();
+  }
 });
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {

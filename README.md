@@ -72,7 +72,10 @@ launchctl setenv OLLAMA_ORIGINS "http://localhost:3000,http://127.0.0.1:3000,chr
    - 把当前网站加入或移出启用列表
    - 手动触发当前页翻译
    - 清除当前页已插入翻译
-5. 在设置页中可以修改 provider、模型、接口地址、提示词和扫描规则
+5. 也可以按 `Alt+Shift+F` 直接翻译当前页面
+6. 在设置页中可以修改 provider、模型、接口地址、提示词和扫描规则
+
+快捷键可在 `edge://extensions/shortcuts` 中修改。
 
 ## Microsoft Foundry 配置
 
